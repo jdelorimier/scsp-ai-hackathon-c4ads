@@ -32,12 +32,8 @@ poetry install
 ```
 running poetry install will install all the libraries we need.
 
-
-IMPORTANT
-KMP_DUPLICATE_LIB_OK=TRUE python dino_main.py
-
-
-# Match
-https://i.ebayimg.com/images/g/7cIAAOSwFHZnMA8N/s-l1600.jpg
-documents/final/ancient_kingdoms_images/27498.png
-
+# Run App
+Run the streamlit app with the following function
+```
+streamlit run app.py
+```
