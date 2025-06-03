@@ -81,10 +81,10 @@ if user_input:
                         # Step 2
                         image_url = item["imageUrl"]
                         image_description = item['description']
-                        reranked = rerank_streamlit(matches, canidate_image_url=image_url, candidate_image_description=image_description)
                         st.subheader("Confirming Matches against O3 Reasoning Model")
+                        reranked = rerank_streamlit(matches, canidate_image_url=image_url, candidate_image_description=image_description)
                         st.write(reranked["analysis"])
-                        if reranked["path"]:
+                        if reranked["path"] is not None:
                             st.image(reranked["path"], caption="Suggested Match", use_column_width=True)
                         st.stop()  # stop rendering further to avoid duplicate analysis
 
