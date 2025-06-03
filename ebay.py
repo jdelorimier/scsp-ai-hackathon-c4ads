@@ -48,7 +48,7 @@ def get_access_token():
     if token:
         return token
 
-    print("Fetching new token...")
+    # print("Fetching new token...")
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
@@ -120,3 +120,23 @@ def get_ebay_item(
     response = requests.get(endpoint, headers=headers)
     response.raise_for_status()
     return response.json()
+
+def streamlit_image(query_string):
+    token = get_access_token()
+    data = search_ebay_products(
+        access_token=token, 
+        query = query_string,
+        limit = 10,
+        sort = "-price",
+        )
+    data = data.get('itemSummaries')
+    if data:
+        results = [{
+            "title": item["title"], 
+            "imageUrl": item["image"]["imageUrl"],
+            "description": item.get('shortDescription', item["title"])
+            } 
+            for item in data]
+        return {"results": results}
+    else:
+        return None
