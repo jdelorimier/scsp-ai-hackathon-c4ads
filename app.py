@@ -10,11 +10,6 @@ KB_IMAGE_PATH = "documents/final/*/*.png"
 SAMPLE = "documents/sample/*.png"
 LOAD_FROM_CACHE = True
 
-
-"""
-DATA INPUTS
-"""
-
 # --- Mock query function ---
 def run_query(user_input):
     if user_input.strip().lower() == "cats":
@@ -50,8 +45,8 @@ def run_rerank(matches, selected_result):
 
 
 # --- Streamlit UI ---
-st.title("Image Search App")
-user_input = st.text_input("Enter your query:")
+st.title("Detecting Illicit Antiquities Trade with Multimodal AI Reasoning")
+user_input = st.text_input("Search vendor marketplace")
 
 if user_input:
     # response = run_query(user_input)
