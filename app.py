@@ -1,50 +1,54 @@
 import streamlit as st
-import pandas as pd
 
-# Mock function to simulate querying a backend or model
+"""
+DATA INPUTS
+"""
+
+# --- Mock query function ---
 def run_query(user_input):
-    # Replace this with your real query logic
     if user_input.strip().lower() == "cats":
         return {
             "results": [
                 {"title": "Cat 1", "image_url": "https://i.ebayimg.com/images/g/7cIAAOSwFHZnMA8N/s-l225.jpg"},
                 {"title": "Cat 2", "image_url": "https://i.ebayimg.com/images/g/7cIAAOSwFHZnMA8N/s-l225.jpg"},
+                {"title": "Cat 3", "image_url": "https://i.ebayimg.com/images/g/7cIAAOSwFHZnMA8N/s-l225.jpg"},
+                {"title": "Cat 4", "image_url": "https://i.ebayimg.com/images/g/7cIAAOSwFHZnMA8N/s-l225.jpg"},
             ]
         }
     else:
         return {"results": []}
-    
-# --- Mock analysis function ---
-def run_analysis(results):
-    # Replace with real analysis logic
+
+# --- Analysis function ---
+def run_analysis(selected_result):
     st.subheader("Analysis Results")
-    st.write(f"Running analysis on {len(results)} items...")
-    for r in results:
-        st.markdown(f"✅ Processed: **{r['title']}**")
+    st.write(f"Running analysis on: **{selected_result['title']}**")
+    st.markdown(f"✅ Processed: **{selected_result['title']}**")
 
-# Streamlit UI
+# --- Streamlit UI ---
 st.title("Image Search App")
-
-# Step 1: User input
 user_input = st.text_input("Enter your query:")
 
-# Only run query if user submitted something
 if user_input:
     response = run_query(user_input)
-
     results = response.get("results", [])
-    
+
     if results:
         st.write(f"Found {len(results)} results:")
 
-        # Display table with title and image preview
-        for item in results:
-            cols = st.columns([1, 3])
-            cols[0].write(f"**{item['title']}**")
-            cols[1].image(item['image_url'], width=150)
-            
-        # --- Run Analysis Button ---
-        if st.button("Run analysis"):
-            run_analysis(results)
+        # Display items in a grid with "Select" buttons
+        cols_per_row = 2
+        for i in range(0, len(results), cols_per_row):
+            cols = st.columns(cols_per_row)
+            for j, col in enumerate(cols):
+                idx = i + j
+                if idx >= len(results):
+                    break
+                item = results[idx]
+                with col:
+                    st.image(item["image_url"], width=150)
+                    st.write(f"**{item['title']}**")
+                    if st.button(f"Select", key=f"select_{idx}"):
+                        run_analysis(item)
+                        st.stop()  # stop rendering further to avoid duplicate analysis
     else:
         st.warning("No results found.")
